@@ -96,14 +96,18 @@ public class Main {
 		if (closingTime != null) {
 			long diffMinutes = Duration.between(LocalTime.now(), closingTime).toMinutes();
 			//System.out.println(diffMinutes);
-			if (diffMinutes <= 60 ) {
-				System.out.println("schließt um " + closingTime + " Uhr");
+			
+			if (opendetails.isOpen(currentTime, dayofweek) == true) {
+				if (diffMinutes <= 60) {
+					System.out.println("schließt um " + closingTime + " Uhr");
+				}
 			}
+			
 		}
         
 		
 		// 3) if closed, get the next opening-time
-        if (opendetails.isOpen(currentTime, dayofweek) == false) {
+        if (opendetails.isOpen(currentTime, dayofweek) == false && opensNext != null) {
         	System.out.println(opensNext);
         }
         

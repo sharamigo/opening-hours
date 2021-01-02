@@ -221,7 +221,7 @@ public class Initializer {
 				null,
 				null,
 				LocalTime.parse("19:00"),
-				LocalTime.parse("15:00"),
+				LocalTime.parse("18:00"),
 		};
 		LocalTime[] breakFrom_shop = new LocalTime[] {null, null, null, null, null, null, null};
 		LocalTime[] breakTo_shop = new LocalTime[] {null, null, null, null, null, null, null};

@@ -29,25 +29,31 @@ public class Openings {
 	 */
 	public boolean isOpen(LocalTime currentTime, int weekday)
 	{
-		//LocalTime currentTime = LocalTime.now();
-		
+				
 		if (this.startTime[weekday] != null && this.endTime[weekday] != null) {
 			//check if current time is in some ranges between start and stop-times
-			if (
-					currentTime.isAfter(this.startTime[weekday]) && currentTime.isBefore(this.endTime[weekday]) || 
-					currentTime.isAfter(this.startTime[weekday]) && currentTime.isBefore(this.startBreak[weekday]) ||
-					currentTime.isAfter(this.stopBreak[weekday]) && currentTime.isBefore(this.endTime[weekday])
-				) {
-				
+			if (currentTime.isAfter(this.startTime[weekday]) && currentTime.isBefore(this.endTime[weekday])) {
 				return true;
-			} else {
-				
-				return false;
+			} 
+			
+			if (this.startBreak[weekday] != null && this.stopBreak[weekday] != null) {
+				if (
+						currentTime.isAfter(this.startTime[weekday]) && currentTime.isBefore(this.startBreak[weekday]) ||
+						currentTime.isAfter(this.stopBreak[weekday]) && currentTime.isBefore(this.endTime[weekday])
+					) 
+				{
+					return true;
+				} else {
+					return false;
+				}
 			}
+			
+			
 		} else {
 			//no start-time and end-time set for a day
 			return false;
-		}		
+		}
+		return false;		
 		
 	}
 	
@@ -60,8 +66,7 @@ public class Openings {
 	 */
 	public String getNextOpeningTime(LocalTime currentTime, int weekday)
 	{
-		//currentTime = LocalTime.now();
-		
+			
 		if (this.isOpen(currentTime, weekday) == false) {
 			//first check if break-times are set for a specific day (current time is in a break-time-range)
 			if (this.startBreak[weekday] != null && this.stopBreak[weekday] != null) {
@@ -70,7 +75,13 @@ public class Openings {
 					return "öffnet wieder um " + this.stopBreak[weekday] + " Uhr";
 					
 				}
-			}			
+			}
+			//check if current time is before start-time of a day
+			if (this.startTime[weekday] != null) {
+				if (currentTime.isBefore(this.startTime[weekday])) {
+					return "öffnet um " + this.startTime[weekday] + " Uhr";
+				}
+			}
 			
 		
 			
@@ -78,7 +89,7 @@ public class Openings {
 				weekday = weekday + 1;
 			} else {
 				weekday = 0;
-			}
+			} 
 				
 			if (this.startTime[weekday] != null) {
 				return "öffnet morgen um " + this.startTime[weekday] + " Uhr";
@@ -96,9 +107,10 @@ public class Openings {
 				return "öffnet am " + this.dayofweek[weekday]  + " um " + this.startTime[weekday] + " Uhr";
 			}
 			
+		} else {
+			return null;
 		}
-		return null;
-		//getNextOpeningTime(currentTime, weekday);
+		
 		
 	}
 	
